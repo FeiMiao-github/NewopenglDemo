@@ -1,0 +1,73 @@
+import os
+from scons import CreateSymlink
+
+includepath = [
+    Dir('#external/glfw-3.3.7/include'),
+    Dir('#external/glad-4.1/include'),
+    Dir('#external/glm-0.9.9.8'),
+    Dir('#external/imgui-1.88'),
+    Dir('#include')
+]
+
+lib = [
+    'glfw3',
+    'GL',
+    'X11',
+    'Xrandr',
+    'Xi',
+    'dl',
+    'pthread'
+]
+
+libpath = [
+    '#/external/glfw-3.3.7/lib'
+]
+
+Import("env")
+env.Append(CPPPATH=includepath)
+
+srcFiles = env.Glob("*.cpp", source=True, strings=True)
+
+gladObj = env.Object(target="glad.o", source="#external/glad-4.1/src/glad.c")
+
+imguiObjs = []
+imguiSrcFiles =env.Glob(pattern="#external/imgui-1.88/imgui/*.cpp", strings=True)
+for srcfile in imguiSrcFiles:
+    objname = os.path.basename(srcfile) + '.o'
+    obj = env.Object(target=objname, source=srcfile)
+    imguiObjs.append(env.Object(target=objname, source=srcfile))
+
+programArr = [
+    { 'srcfile': '#test/draw_triangle.cpp', 'dep': [gladObj] },
+    { 'srcfile': '#test/test_imgui.cpp', 'dep': [*imguiObjs] }
+]
+
+def AddSuffix(srcfile, suffix):
+    return os.path.basename(srcfile) + suffix
+
+def ObjName(srcfile):
+    return AddSuffix(srcfile=srcfile, suffix='.o')
+
+def ExeName(srcfile):
+    return AddSuffix(srcfile=srcfile, suffix='.out')
+
+def ToObj(srcfile):
+    objname = ObjName(srcfile=srcfile)
+    return env.Object(target=objname, source=srcfile)
+
+def AddProgram(srcfile, *dep):
+    obj = ToObj(srcfile=srcfile)
+    exename = ExeName(srcfile=srcfile)
+    env.Program(exename, [obj, *dep], LIBS=lib, LIBPATH=libpath)
+
+for p in programArr:
+    AddProgram(p['srcfile'], p['dep'])
+
+c = env.Command(
+    target = "#build/src/res",
+    source = "#res",
+    action = [
+        CreateSymlink("$TARGET", "$SOURCE")
+    ]
+)
+Clean(c, "#build/res")

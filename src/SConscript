@@ -1,0 +1,48 @@
+import os
+from scons import CreateSymlink
+
+includepath = [
+    Dir('#/external/glfw-3.3.7/include'),
+    Dir('#/external/glad-4.1/include'),
+    Dir('#external/glm-0.9.9.8'),
+    Dir('#external/imgui-1.88'),
+    Dir('#/include')
+]
+
+lib = [
+    'glfw3',
+    'GL',
+    'X11',
+    'Xrandr',
+    'Xi',
+    'dl',
+    'pthread'
+]
+
+libpath = [
+    '#/external/glfw-3.3.7/lib'
+]
+
+def GetObjs():
+    srcFiles = Glob("*.cpp", strings=True)
+    srcFiles.append('#external/glad-4.1/src/glad.c')
+    srcFiles += env.Glob(pattern="#external/imgui-1.88/imgui/*.cpp", strings=True)
+    objFiles = []
+    for srcfile in srcFiles:
+        objname = os.path.basename(srcfile) + '.o'
+        objFiles.append(env.Object(target=objname, source=srcfile))
+
+    return objFiles
+
+Import("env")
+env.Append(CPPPATH=includepath)
+env.Program('demo', GetObjs(), LIBS=lib, LIBPATH=libpath)
+
+c = env.Command(
+    target = "#build/src/res",
+    source = "#res",
+    action = [
+        CreateSymlink("$TARGET", "$SOURCE")
+    ]
+)
+Clean(c, "#build/res")
