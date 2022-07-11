@@ -2,7 +2,8 @@
 
 #include "demo/shader.h"
 #include "demo/imgui.h"
-#include "demo/triangle.h"
+#include "demo/shape.h"
+#include "demo/texture.h"
 
 auto framebufferSizeCB = [](GLFWwindow*, int width, int height)
 {
@@ -40,13 +41,6 @@ GLFWwindow* ConfigWindow(int width, int height, const char* title)
     glfwSetFramebufferSizeCallback(window, framebufferSizeCB);
     glfwSetKeyCallback(window, keyCB);
     return window;
-}
-
-void DrawBuffer(GLuint program, GLuint triangle)
-{
-    glUseProgram(program);
-    glBindVertexArray(triangle);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 }
 
 struct Mat4Wrapper
@@ -125,31 +119,38 @@ int main()
     SetProgramMat4(program, "view", view.Mat4());
     SetProgramMat4(program, "projection", projection.Mat4());
 
-    GLuint triangle = MakeTriangleE();
+    Cube *cube = new Cube;
     glfwSwapInterval(2);
 
     InitImgGui(window, GLSL_VERSION);
+    Texture *texture = new Texture("texture.jpeg");
+
+    glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
+
+        texture->Use();
         DrawImGui();
-        DrawBuffer(program, triangle);
 
         model.Mat4() = glm::mat4(1.0f);
         model.Mat4() = glm::rotate(model.Mat4(), glm::radians(model_rotation_x.Float()), glm::vec3(1.0f, 0.0f, 0.0f));
         model.Mat4() = glm::rotate(model.Mat4(), glm::radians(model_rotation_y.Float()), glm::vec3(0.0f, 1.0f, 0.0f));
         model.Mat4() = glm::rotate(model.Mat4(), glm::radians(model_rotation_z.Float()), glm::vec3(0.0f, 0.0f, 1.0f));
         SetProgramMat4(program, "model", model.Mat4());
+
+        glUseProgram(program);
+        cube->DrawBuffer();
         
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+    delete texture;
     DestroyImGui();
-    glDeleteBuffers(1, &triangle);
+    delete cube;
     glDeleteProgram(program);
     glfwDestroyWindow(window);
     glfwTerminate();

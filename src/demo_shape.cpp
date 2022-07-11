@@ -1,4 +1,4 @@
-#include <demo/triangle.h>
+#include "demo/shape.h"
 
 typedef GLfloat vec2[2];
 typedef GLfloat vec3[3];
@@ -50,7 +50,7 @@ static GLuint MakeTriangleEBO(TriangleIndex_t indices[], size_t size)
 static GLuint MakeTriangleA()
 {
 	static PointData_t vertices[] = {
-		0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.5f, 1.0f,
+		0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.5f, 0.5f,
 		0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 		-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
@@ -71,10 +71,10 @@ GLuint MakeTriangleE()
 		{0, 2, 3},
 		{4, 5, 7},
 		{5, 6, 7},
-        {4, 5, 6},
-        {4, 6, 7},
 		{2, 3, 6},
 		{3, 6, 7},
+		{0, 1, 5},
+		{0, 4, 5},
 		{0, 3, 7},
 		{0, 4, 7},
 		{1, 2, 6},
@@ -83,4 +83,50 @@ GLuint MakeTriangleE()
 
 	MakeTriangleA();
 	return MakeTriangleEBO(indices, sizeof(indices) / sizeof(TriangleIndex_t));
+}
+
+void DrawBuffer(GLuint program, GLuint triangle)
+{
+    glUseProgram(program);
+    glBindVertexArray(triangle);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+}
+
+const size_t Cube::POINT_NR;
+
+void Cube::MakeVBO()
+{
+	GLuint VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER,
+		POINT_NR * sizeof(PointData_t), reinterpret_cast<const void*>(POINTS), GL_STATIC_DRAW);
+}
+
+void Cube::MakeVAO()
+{
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	glVertexAttribPointer(0, sizeof(PointData_t::pos)  / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(PointData_t), NULL);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, sizeof(PointData_t::texCoord) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(PointData_t), (void*)(sizeof(PointData_t::pos)));
+	glEnableVertexAttribArray(1);
+}
+
+void Cube::DrawBuffer()
+{
+    glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, POINT_NR);
+}
+
+Cube::Cube()
+{
+	MakeVBO();
+	MakeVAO();
+}
+
+Cube::~Cube()
+{
+	glDeleteBuffers(1, &VAO);
+	glDeleteBuffers(1, &VBO);
 }

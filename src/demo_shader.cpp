@@ -2,11 +2,6 @@
 #include "demo/shader.h"
 #include "demo/loader.h"
 
-static std::string GetShaderFullPath(const std::string &shaderpath)
-{
-    return "res/shader/" + shaderpath;
-}
-
 static void PrintShaderCompileStatus(GLuint shader, const std::string& shaderName)
 {
 	char info[512] = "";
@@ -46,8 +41,8 @@ static GLuint InitShader(GLenum type, const std::string &shaderName)
 
 GLuint InitProgram()
 {
-	GLuint vshader = InitShader(GL_VERTEX_SHADER, "shader.vs");
-	GLuint fshader = InitShader(GL_FRAGMENT_SHADER, "shader.fs");
+	GLuint vshader = InitShader(GL_VERTEX_SHADER, "texture_shader.vs");
+	GLuint fshader = InitShader(GL_FRAGMENT_SHADER, "texture_shader.fs");
 
 	GLuint program = glCreateProgram();
 

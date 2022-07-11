@@ -40,5 +40,7 @@ public:
 };
 
 std::string LoadShader(const std::string &path);
+std::string GetShaderFullPath(const std::string &name);
+std::string GetTextureFullPath(const std::string &name);
 
 #endif

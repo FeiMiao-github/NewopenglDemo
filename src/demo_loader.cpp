@@ -20,3 +20,13 @@ std::string LoadShader(const std::string &path)
 	
 	return ret;
 }
+
+std::string GetShaderFullPath(const std::string &name)
+{
+    return "res/shader/" + name;
+}
+
+std::string GetTextureFullPath(const std::string &name)
+{
+	return "res/texture/" + name;
+}
