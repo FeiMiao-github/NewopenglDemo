@@ -19,7 +19,7 @@ namespace demo
         virtual void Move(const glm::vec3& axis);
         virtual void Scale(const glm::vec3& ratio);
 
-        glm::mat4 &Value()
+        const glm::mat4 &Value() const
         {
             return m_Mat4;
         }

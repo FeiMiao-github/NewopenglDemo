@@ -1,5 +1,7 @@
 #include "demo/shape.h"
 
+using namespace demo;
+
 typedef GLfloat vec2[2];
 typedef GLfloat vec3[3];
 
@@ -113,7 +115,7 @@ void Cube::MakeVAO()
 	glEnableVertexAttribArray(1);
 }
 
-void Cube::DrawBuffer()
+void Cube::Draw()
 {
     glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, POINT_NR);

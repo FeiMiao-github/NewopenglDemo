@@ -8,71 +8,73 @@
 #include <glm/matrix.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class Cube
-{
-public:
-    typedef struct {
-        glm::vec3 pos;
-        glm::vec2 texCoord;
-    } PointData_t;
+namespace demo{
+    class Cube
+    {
+    public:
+        typedef struct {
+            glm::vec3 pos;
+            glm::vec2 texCoord;
+        } PointData_t;
 
-    Cube();
-    virtual ~Cube();
+        Cube();
+        virtual ~Cube();
 
-private:
-    void MakeVBO();
-    void MakeVAO();
+    private:
+        void MakeVBO();
+        void MakeVAO();
 
-public:
-    void DrawBuffer();
+    public:
+        void Draw();
 
-private:
-    const static size_t POINT_NR = 36;
-    const PointData_t POINTS[POINT_NR] = {
-        PointData_t{ .pos = { -0.5f, -0.5f, -0.5f}, .texCoord = { 0.0f, 0.0f }},
-        PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 0.0f}},
+    private:
+        const static size_t POINT_NR = 36;
+        const PointData_t POINTS[POINT_NR] = {
+            PointData_t{ .pos = { -0.5f, -0.5f, -0.5f}, .texCoord = { 0.0f, 0.0f }},
+            PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 0.0f}},
 
-        PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
 
-        PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
-        PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
 
-        PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
 
-        PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
-        PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f, -0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f, -0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
 
-        PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
-        PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
-        PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}}
+            PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f, -0.5f},  .texCoord = {1.0f, 1.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { 0.5f,  0.5f,  0.5f},  .texCoord = {1.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f,  0.5f},  .texCoord = {0.0f, 0.0f}},
+            PointData_t{ .pos = { -0.5f,  0.5f, -0.5f},  .texCoord = {0.0f, 1.0f}}
+        };
+
+        GLuint VAO, VBO;
     };
-
-	GLuint VAO, VBO;
-};
+}
 
 #endif // DEMO_SHAPE_H__

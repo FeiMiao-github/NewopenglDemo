@@ -79,7 +79,7 @@ void ShaderProgram::SetProgramFloat(const std::string& prop, const GLfloat value
 
 void ShaderProgram::SetProgramMat4(const std::string& prop, const glm::mat4& ptr)
 {
-	Log::debug("SetProgramMat4: {}:{}", prop, ptr);
+	// Log::debug("SetProgramMat4: {}:{}", prop, ptr);
 	Use();
 	GLint loc = glGetUniformLocation(m_ID, prop.c_str());
 	glUniformMatrix4fv(loc, 1, GL_TRUE, glm::value_ptr(ptr));
@@ -87,7 +87,7 @@ void ShaderProgram::SetProgramMat4(const std::string& prop, const glm::mat4& ptr
 
 void ShaderProgram::SetProgramFloat3(const std::string& prop, const glm::vec3& ptr)
 {
-	Log::debug("SetProgramFloat3: {}:{}", prop, ptr);
+	// Log::debug("SetProgramFloat3: {}:{}", prop, ptr);
 	Use();
 	GLuint loc = glGetUniformLocation(m_ID, prop.c_str());
 	glUniform3fv(loc, 1, glm::value_ptr(ptr));

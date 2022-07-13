@@ -1,6 +1,8 @@
 #include <cassert>
 #include <ostream>
 
+#include "demo/context.h"
+#include "demo/object.h"
 #include "demo/shader.h"
 #include "demo/imgui.h"
 #include "demo/shape.h"
@@ -54,28 +56,13 @@ int main()
     const int WINDOW_W = 800;
     // const char* GLSL_VERSION = "#version 410";
 
-    glm::mat4 view(1.0f);
-    glm::mat4 projection(1.0f);
+    demo::Context ctx;
 
     ConfigGlfw();
     GLFWwindow* window = ConfigWindow(WINDOW_W, WINDOW_H, "Hello GL");
     glViewport(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);
 
-    demo::LocalCoordination model;
-    demo::Shader* vertexShader = new demo::VertexShader("cube.vs");
-    demo::Shader* fragmentShader = new demo::FragmentShader("cube.fs");
-    demo::ShaderProgram* program = new demo::ShaderProgram({vertexShader, fragmentShader});
-    delete fragmentShader;
-    delete vertexShader;
-
-    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-    program->SetProgramMat4("model", model.Value());
-    program->SetProgramMat4("view", view);
-    program->SetProgramMat4("projection", projection);
-    program->SetProgramFloat3("vColor", demo::Color::Coral);
-    program->SetProgramFloat3("vLightingColor", lightColor);
-
-    Cube *cube = new Cube;
+    demo::CubeRender* cube = new demo::CubeRender(ctx);
     glfwSwapInterval(2);
 
     // InitImgGui(window, GLSL_VERSION);
@@ -87,17 +74,15 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        program->Use();
-        cube->DrawBuffer();
         // DrawImGui();
+        cube->Draw();
         
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // DestroyImGui();
     delete cube;
-    delete program;
+    // DestroyImGui();
     glfwDestroyWindow(window);
     glfwTerminate();
 
