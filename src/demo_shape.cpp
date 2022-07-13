@@ -50,14 +50,14 @@ static GLuint MakeTriangleEBO(TriangleIndex_t indices[], size_t size)
 static GLuint MakeTriangleA()
 {
 	static PointData_t vertices[] = {
-		0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.5f, 0.5f,
-		0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-		-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.5f, 1.0f,
-		0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.5f, 1.0f,
+		{{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {0.5f, 0.5f}},
+		{{0.5f, -0.5f, -0.5f},{1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+        {{0.5f, 0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}, {0.5f, 1.0f}},
+		{{0.5f, -0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-0.5f, -0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-0.5f, 0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}, {0.5f, 1.0f}}
 	};
 
 	MakeTriangleVBO(vertices, sizeof(vertices) / sizeof(PointData_t));
