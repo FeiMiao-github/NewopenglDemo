@@ -6,9 +6,9 @@ env.Tool('compilation_db')
 env.CompilationDatabase()   
 
 if DEBUG:
-    env.Append(CPPFLAGS=['-g', '-O0', '-Wall', '-W'])
+    env.Append(CPPFLAGS=['-g', '-O0', '-Wall', '-W', '-std=c++23'])
 else:
-    env.Append(CPPFLAGS=['-O3'])
+    env.Append(CPPFLAGS=['-O3', '-std=c++23'])
 env.Export("env")
 
 env.VariantDir('#/build/src', '#/src', duplicate=0)

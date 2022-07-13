@@ -4,6 +4,7 @@
 #include "demo/imgui.h"
 #include "demo/shape.h"
 #include "demo/texture.h"
+#include "demo/coordination.h"
 
 auto framebufferSizeCB = [](GLFWwindow*, int width, int height)
 {
@@ -43,56 +44,6 @@ GLFWwindow* ConfigWindow(int width, int height, const char* title)
     return window;
 }
 
-struct Mat4Wrapper
-{
-public:
-    Mat4Wrapper(const float e = 1.0f, const char* label = "")
-        : m_Mat4(e), 
-          m_Mat4Gui(m_Mat4, label)
-    {
-        ImGuiCtx::Inst()->Add(&m_Mat4Gui);
-    }
-
-    ~Mat4Wrapper()
-    {
-        ImGuiCtx::Inst()->Del(&m_Mat4Gui);
-    }
-
-    glm::mat4& Mat4()
-    {
-        return m_Mat4;
-    }
-
-private:
-    glm::mat4 m_Mat4;
-    Mat4Gui m_Mat4Gui;
-};
-
-class FloatWrapper
-{
-public:
-    FloatWrapper(const float v, const char* label)
-        : m_V(v),
-          m_FloatSlider(m_V, label)
-    {
-        ImGuiCtx::Inst()->Add(&m_FloatSlider);
-    }
-
-    ~FloatWrapper()
-    {
-        ImGuiCtx::Inst()->Del(&m_FloatSlider);
-    }
-
-    float& Float()
-    {
-        return m_V;
-    }
-
-private:
-    float m_V;
-    FloatSlider m_FloatSlider;
-};
-
 int main()
 {
     const int WINDOW_X = 0;
@@ -101,13 +52,8 @@ int main()
     const int WINDOW_W = 800;
     const char* GLSL_VERSION = "#version 410";
 
-    Mat4Wrapper model(1.0, "model");
-    Mat4Wrapper view(1.0, "view");
-    Mat4Wrapper projection(1.0, "projection");
-
-    FloatWrapper model_rotation_x(0.0f, "model_rotation_x");
-    FloatWrapper model_rotation_y(0.0f, "model_rotation_y");
-    FloatWrapper model_rotation_z(0.0f, "model_rotation_z");
+    glm::mat4 view(1.0);
+    glm::mat4 projection(1.0);
 
     ConfigGlfw();
     GLFWwindow* window = ConfigWindow(WINDOW_W, WINDOW_H, "Hello GL");
@@ -116,8 +62,14 @@ int main()
     GLuint program = InitProgram();
     glUseProgram(program);
     
-    SetProgramMat4(program, "view", view.Mat4());
-    SetProgramMat4(program, "projection", projection.Mat4());
+    demo::LocalCoordination model;
+    model.Rotate(glm::radians(30.0f), glm::vec3(1, 0, 0));
+    model.Rotate(glm::radians(30.0f), glm::vec3(0, 1, 0));
+    model.Rotate(glm::radians(30.0f), glm::vec3(0, 0, 1));
+
+    SetProgramMat4(program, "model", model.Value());
+    SetProgramMat4(program, "view", view);
+    SetProgramMat4(program, "projection", projection);
 
     Cube *cube = new Cube;
     glfwSwapInterval(2);
@@ -133,16 +85,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         texture->Use();
-        DrawImGui();
-
-        model.Mat4() = glm::mat4(1.0f);
-        model.Mat4() = glm::rotate(model.Mat4(), glm::radians(model_rotation_x.Float()), glm::vec3(1.0f, 0.0f, 0.0f));
-        model.Mat4() = glm::rotate(model.Mat4(), glm::radians(model_rotation_y.Float()), glm::vec3(0.0f, 1.0f, 0.0f));
-        model.Mat4() = glm::rotate(model.Mat4(), glm::radians(model_rotation_z.Float()), glm::vec3(0.0f, 0.0f, 1.0f));
-        SetProgramMat4(program, "model", model.Mat4());
 
         glUseProgram(program);
         cube->DrawBuffer();
+        DrawImGui();
         
         glfwSwapBuffers(window);
         glfwPollEvents();

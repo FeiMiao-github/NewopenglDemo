@@ -7,7 +7,8 @@ includepath = [
     Dir('#external/glm-0.9.9.8'),
     Dir('#external/imgui-1.88'),
     Dir('#external/stb/include'),
-    Dir('#/include')
+    Dir('#/include'),
+    Dir('#/include/imgui')
 ]
 
 lib = [
