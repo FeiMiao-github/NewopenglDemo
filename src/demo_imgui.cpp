@@ -51,3 +51,64 @@ void DestroyImGui()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
+
+PosPublisher::PosPublisher(const std::string& label)
+    : m_Pos(0.0f),
+      m_Label(label)
+{
+    ImGuiCtx::Inst()->Add(this);
+}
+
+PosPublisher::~PosPublisher()
+{
+    ImGuiCtx::Inst()->Del(this);
+}
+
+void PosPublisher::AddSubscriber(IPosSubscriber *subscriber)
+{
+    if (!CheckIfExistSubscriber(subscriber))
+    {
+        m_Subscriber.push_back(subscriber);
+    }
+}
+
+void PosPublisher::RemoveSubscriber(IPosSubscriber *subscriber)
+{
+    m_Subscriber.remove(subscriber);
+}
+
+bool PosPublisher::CheckIfExistSubscriber(IPosSubscriber* subscriber)
+{
+    for (auto p = m_Subscriber.begin(); p != m_Subscriber.end(); p++)
+    {
+        if (*p == subscriber) return true;
+    }
+    return false;
+}
+
+void PosPublisher::Update()
+{
+    for (auto p = m_Subscriber.begin(); p != m_Subscriber.end(); p++)
+    {
+        (*p)->UpdatePos(m_Pos);
+    }
+}
+
+void PosPublisher::Draw()
+{
+    if (ImGui::TreeNode(m_Label.c_str()))
+    {
+        bool change = false;
+        if (ImGui::SliderFloat3("", &m_Pos[0], -2.0f, 2.0f))
+        {
+            change = true;
+        }
+
+        if (change)
+        {
+            Update();
+        }
+
+        ImGui::TreePop();
+    }
+}

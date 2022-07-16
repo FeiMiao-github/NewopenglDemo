@@ -1,13 +1,15 @@
 import os
 from scons import CreateSymlink
 
+Import("env")
+
 includepath = [
     Dir('#/external/glfw-3.3.7/include'),
     Dir('#/external/glad-4.1/include'),
     Dir('#external/glm-0.9.9.8'),
     Dir('#external/imgui-1.88'),
     Dir('#external/stb/include'),
-    Dir('#external/spdlog-1.10.0/include'),
+    Dir('#external/loguru-2.1.0/include'),
     Dir('#/include'),
     Dir('#/include/imgui')
 ]
@@ -31,6 +33,7 @@ def GetObjs():
     srcFiles.append('#external/glad-4.1/src/glad.c')
     srcFiles += env.Glob(pattern="#external/imgui-1.88/imgui/*.cpp", strings=True)
     srcFiles += env.Glob(pattern="#external/stb/src/stb_image.cpp", strings=True)
+    srcFiles += env.Glob(pattern="#external/loguru-2.1.0/src/*.cpp", strings=True)
     objFiles = []
     for srcfile in srcFiles:
         objname = os.path.basename(srcfile) + '.o'
@@ -38,7 +41,6 @@ def GetObjs():
 
     return objFiles
 
-Import("env")
 env.Append(CPPPATH=includepath)
 env.Program('demo', GetObjs(), LIBS=lib, LIBPATH=libpath)
 

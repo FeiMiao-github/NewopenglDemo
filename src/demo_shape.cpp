@@ -1,4 +1,5 @@
 #include "demo/shape.h"
+#include "demo/log.h"
 
 using namespace demo;
 
@@ -95,6 +96,7 @@ void DrawBuffer(GLuint program, GLuint triangle)
 }
 
 const size_t Cube::POINT_NR;
+const size_t Cube::VERTEX_ATTR_NR;
 
 void Cube::MakeVBO()
 {
@@ -109,10 +111,13 @@ void Cube::MakeVAO()
 {
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	glVertexAttribPointer(0, sizeof(PointData_t::pos)  / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(PointData_t), NULL);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, sizeof(PointData_t::texCoord) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(PointData_t), (void*)(sizeof(PointData_t::pos)));
-	glEnableVertexAttribArray(1);
+	Log::debug("MakeVAO !");
+	for (size_t i = 0; i < VERTEX_ATTR_NR; i++)
+	{
+		VertextAttr_t attr = VERTEX_ATTRS[i];
+		glVertexAttribPointer(attr.index, attr.size, attr.type, attr.normalized, attr.stride, attr.pointer);
+		glEnableVertexAttribArray(attr.index);
+	}
 }
 
 void Cube::Draw()

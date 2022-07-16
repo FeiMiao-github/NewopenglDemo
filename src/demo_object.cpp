@@ -1,3 +1,4 @@
+#include "demo/context.h"
 #include "demo/coordination.h"
 #include "demo/object.h"
 #include "demo/shader.h"
@@ -6,68 +7,28 @@
 
 using namespace demo;
 
-RenderTarget::RenderTarget(Context& ctx)
-    : m_Context(ctx)
-{
-}
+RenderTarget::RenderTarget() {}
+RenderTarget::~RenderTarget() {}
 
-RenderTarget::~RenderTarget()
-{
-}
-
-// Cube* RenderTarget::GetCube()
-// {
-//     return m_Cube;
-// }
-
-// void RenderTarget::SetCube(Cube *cube)
-// {
-//     if (cube == nullptr)
-//     {
-//         return;
-//     }
-
-//     if (m_Cube != nullptr)
-//     {
-//         delete m_Cube;
-//     }
-
-//     m_Cube = new Cube(*cube);
-// }
-
-// ShaderProgram* RenderTarget::GetShaderProgram()
-// {
-//     return m_ShaderProgram;
-// }
-
-// void RenderTarget::SetShaderProgram(ShaderProgram* shaderProgram)
-// {
-//     if (shaderProgram == nullptr)
-//     {
-//         return;
-//     }
-
-//     if (m_ShaderProgram != nullptr)
-//     {
-//         delete m_ShaderProgram;
-//     }
-
-//     m_ShaderProgram = new ShaderProgram(*shaderProgram);
-// }
-
-CubeRender::CubeRender(Context& ctx)
-    : RenderTarget(ctx),
-      m_Cube(new Cube),
+CubeRender::CubeRender()
+    : m_Cube(new Cube),
       m_Model(new LocalCoordination),
       m_ShaderProgram(nullptr)
 {
-    Shader* vertexShader = new VertexShader("cube.vs");
-    Shader* fragmentShader = new FragmentShader("cube.fs");
-    m_ShaderProgram = new ShaderProgram({vertexShader, fragmentShader});
-    delete fragmentShader;
-    delete vertexShader;
+    m_ShaderProgram = new ShaderProgram("cube.vs", "cube.fs");
+    m_Model->Move(glm::vec3(0.0f, -1.0f,-0.0f));
+    // m_Model->Rotate(glm::radians(-30.0f), glm::vec3(0, 0, 1.0f));
+    // m_Model->Rotate(glm::radians(-30.0f), glm::vec3(0, 1.0f, 0.0f));
+    // m_Model->Rotate(glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-    m_ShaderProgram->SetProgramFloat3("vColor", Color::Coral);
+    auto &ctx = Context::Inst();
+    m_ShaderProgram->SetProgramMat4("model", m_Model->Value());
+    m_ShaderProgram->SetProgramMat4("projection", ctx->Proj()->Value());
+    m_ShaderProgram->SetProgramMat4("view", ctx->View()->Value());
+    m_ShaderProgram->SetProgramFloat4("vColor", Color::Coral);
+    m_ShaderProgram->SetProgramFloat4("vLightingColor", ctx->LightColor());
+    m_ShaderProgram->SetProgramFloat3("vLightPos", ctx->LightPos());
+    m_ShaderProgram->SetProgramFloat3("vViewPos", ctx->ViewPos());
 }
 
 CubeRender::~CubeRender()
@@ -82,13 +43,9 @@ CubeRender::~CubeRender()
 
 void CubeRender::Draw()
 {
-    m_Model->Rotate(glm::radians(30.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    m_ShaderProgram->SetProgramMat4("model", m_Model->Value());
-
-    m_ShaderProgram->SetProgramMat4("view", m_Context.View()->Value());
-    m_ShaderProgram->SetProgramMat4("projection", m_Context.Proj()->Value());
-    m_ShaderProgram->SetProgramFloat3("vLightingColor", m_Context.LightColor());
-
+    auto &ctx = Context::Inst();
+    m_ShaderProgram->SetProgramFloat4("vLightingColor", ctx->LightColor());
+    m_ShaderProgram->SetProgramFloat3("vLightPos", ctx->LightPos());
     m_ShaderProgram->Use();
     m_Cube->Draw();
 }

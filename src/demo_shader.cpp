@@ -1,11 +1,11 @@
 #include <iostream>
 #include <cassert>
-
 #include <string>
+
+#include <loguru/loguru.hpp>
 
 #include "demo/shader.h"
 #include "demo/loader.h"
-#include "demo/log.h"
 
 using namespace demo;
 
@@ -37,7 +37,6 @@ Shader::Shader(Type type, const std::string &shaderName)
 {
 	std::string fullPath = GetShaderFullPath(shaderName);
 	std::string src = LoadShader(fullPath);
-	std::cout << "shader src: \n" << src << '\n';
 	const char* bufptr = src.c_str();
 	GLuint shader = glCreateShader(static_cast<GLenum>(type));
 	glShaderSource(shader, 1, &bufptr, NULL);
@@ -57,12 +56,28 @@ ShaderProgram::ShaderProgram(const std::initializer_list<Shader*> &list)
 	m_ID = glCreateProgram();
 	for (auto p = list.begin(); p != list.end(); p++)
 	{
-		Log::debug("Attach Shader: {}", (*p)->GetID());
+		LOG_S(INFO) << "Attach Shader:" << (*p)->GetID();
 		glAttachShader(m_ID, (*p)->GetID());
 	}
 	glLinkProgram(m_ID);
 	PrintProgramLinkStatus(m_ID);
 }
+
+ShaderProgram::ShaderProgram(const std::string& vertex, const std::string& fragment)
+{
+	Shader* vertexShader = new VertexShader(vertex.c_str());
+    Shader* fragmentShader = new FragmentShader(fragment.c_str());
+	
+	m_ID = glCreateProgram();
+	glAttachShader(m_ID, vertexShader->GetID());
+	glAttachShader(m_ID, fragmentShader->GetID());
+	glLinkProgram(m_ID);
+	PrintProgramLinkStatus(m_ID);
+
+	delete fragmentShader;
+	delete vertexShader;
+}
+
 
 ShaderProgram::~ShaderProgram()
 {
@@ -82,7 +97,7 @@ void ShaderProgram::SetProgramMat4(const std::string& prop, const glm::mat4& ptr
 	// Log::debug("SetProgramMat4: {}:{}", prop, ptr);
 	Use();
 	GLint loc = glGetUniformLocation(m_ID, prop.c_str());
-	glUniformMatrix4fv(loc, 1, GL_TRUE, glm::value_ptr(ptr));
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(ptr));
 }
 
 void ShaderProgram::SetProgramFloat3(const std::string& prop, const glm::vec3& ptr)
@@ -91,6 +106,13 @@ void ShaderProgram::SetProgramFloat3(const std::string& prop, const glm::vec3& p
 	Use();
 	GLuint loc = glGetUniformLocation(m_ID, prop.c_str());
 	glUniform3fv(loc, 1, glm::value_ptr(ptr));
+}
+
+void ShaderProgram::SetProgramFloat4(const std::string& prop, const glm::vec4& ptr)
+{
+	Use();
+	GLuint loc = glGetUniformLocation(m_ID, prop.c_str());
+	glUniform4fv(loc, 1, glm::value_ptr(ptr));
 }
 
 void ShaderProgram::Use()

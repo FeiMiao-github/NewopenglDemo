@@ -2,6 +2,7 @@
 #include <ostream>
 
 #include "demo/context.h"
+#include "demo/lighting.h"
 #include "demo/object.h"
 #include "demo/shader.h"
 #include "demo/imgui.h"
@@ -33,7 +34,7 @@ void ConfigGlfw()
     int ret = glfwInit();
     assert(ret == GLFW_TRUE);
     glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GL_TRUE);
-    glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+    // glfwWindowHint(GLFW_DECORATED, GL_FALSE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 }
@@ -54,35 +55,47 @@ int main()
     const int WINDOW_Y = 0;
     const int WINDOW_H = 800;
     const int WINDOW_W = 800;
-    // const char* GLSL_VERSION = "#version 410";
-
-    demo::Context ctx;
+    const double SEC_PER_FPS = 1.0 / 10.0;
+    const char* GLSL_VERSION = "#version 410";
 
     ConfigGlfw();
     GLFWwindow* window = ConfigWindow(WINDOW_W, WINDOW_H, "Hello GL");
     glViewport(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);
 
-    demo::CubeRender* cube = new demo::CubeRender(ctx);
-    glfwSwapInterval(2);
+    demo::Lighting* lighting = new demo::Lighting();
+    demo::CubeRender* cube = new demo::CubeRender();
 
-    // InitImgGui(window, GLSL_VERSION);
-
+    glfwSwapInterval(1);
+    InitImgGui(window, GLSL_VERSION);
     glEnable(GL_DEPTH_TEST);
 
+    double lastTime = glfwGetTime();
     while (!glfwWindowShouldClose(window))
     {
+        double current = glfwGetTime();
+        if (current - lastTime < SEC_PER_FPS)
+        {
+            continue;
+        }
+
+        lastTime = current;
+
         glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // DrawImGui();
+        DrawImGui();
+        demo::Context::Inst()->Update();
+
         cube->Draw();
+        lighting->Draw();
         
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     delete cube;
-    // DestroyImGui();
+    delete lighting;
+    DestroyImGui();
     glfwDestroyWindow(window);
     glfwTerminate();
 

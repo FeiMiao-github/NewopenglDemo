@@ -2,8 +2,6 @@
 
 using namespace demo;
 
-Log::InnerLog Log::m_LogInner;
-
 std::ostream & demo::operator<<(std::ostream& o, const glm::mat4 & m)
 {
     o << '\n';
@@ -15,6 +13,17 @@ std::ostream & demo::operator<<(std::ostream& o, const glm::mat4 & m)
         }
         o << '\n';
     }
+    return o;
+}
+
+std::ostream & demo::operator<<(std::ostream& o, const glm::vec4 & v)
+{
+    o << '[';
+    for (int i = 0; i < 4; i++)
+    {
+        o << v[i] << ' ';
+    }
+    o << ']';
     return o;
 }
 

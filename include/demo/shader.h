@@ -96,6 +96,7 @@ namespace demo
     {
     public:
         ShaderProgram(const std::initializer_list<Shader*>& list);
+        ShaderProgram(const std::string& vertex, const std::string& fragment);
         ~ShaderProgram();
 
         GLuint GetID()
@@ -106,6 +107,7 @@ namespace demo
         void SetProgramFloat(const std::string& prop, const GLfloat value);
         void SetProgramMat4(const std::string& prop, const glm::mat4& ptr);
         void SetProgramFloat3(const std::string& prop, const glm::vec3& ptr);
+        void SetProgramFloat4(const std::string& prop, const glm::vec4& ptr);
 
         void Use();
 

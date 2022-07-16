@@ -1,14 +1,19 @@
 # -*- coding:utf-8 -*-
 DEBUG = True
 
-env = Environment(COMPILATIONDB_USE_ABSPATH=True)
+env = Environment(
+    COMPILATIONDB_USE_ABSPATH=True,
+    CC='ccache gcc',
+    CXX='ccache g++'
+)
 env.Tool('compilation_db')
 env.CompilationDatabase()   
 
 if DEBUG:
-    env.Append(CPPFLAGS=['-g', '-O0', '-Wall', '-W', '-std=c++23'])
+    env.Append(CPPFLAGS=['-g', '-O0', '-Wall', '-W'])
 else:
     env.Append(CPPFLAGS=['-O3', '-std=c++23'])
+
 env.Export("env")
 
 env.VariantDir('#/build/src', '#/src', duplicate=0)

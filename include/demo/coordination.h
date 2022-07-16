@@ -1,6 +1,7 @@
 #ifndef DEMO_COORDINATION_H__
 #define DEMO_COORDINATION_H__
 
+#include "glm/ext/matrix_clip_space.hpp"
 #include <glm/matrix.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -17,14 +18,15 @@ namespace demo
         virtual ~Coordination() {}
         virtual void Rotate(const float angle, const glm::vec3& axis);
         virtual void Move(const glm::vec3& axis);
+        virtual void MoveTo(const glm::vec3& dist);
         virtual void Scale(const glm::vec3& ratio);
 
         const glm::mat4 &Value() const
         {
             return m_Mat4;
         }
-
-    private:
+    
+    protected:
         glm::mat4 m_Mat4;
     };
 
@@ -48,7 +50,27 @@ namespace demo
         : public Coordination
     {
     public:
-        ProjectionCoordination() {}
+        struct OrthoConfig
+        {
+            double Left;
+            double Right;
+            double Bottom;
+            double Top;
+            double Near;
+            double Far;
+        };
+
+        struct PerspectiveConfig
+        {
+            double Fov;
+            double Aspect;
+            double Near;
+            double Far;
+        };
+
+        ProjectionCoordination(const OrthoConfig& config);
+        ProjectionCoordination(const PerspectiveConfig& config);
+
         ~ProjectionCoordination() {}
     };
 }

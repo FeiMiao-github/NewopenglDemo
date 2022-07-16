@@ -101,6 +101,35 @@ namespace demo
             std::list<IDrawImp*> m_List;
             static GC s_GC;
         };
+
+        class IPosSubscriber
+        {
+        public:
+            virtual void UpdatePos(const glm::vec3& Pos) = 0;
+        };
+
+        class PosPublisher
+            : public IDrawImp
+        {
+        public:
+            PosPublisher(const std::string& label);
+            virtual ~PosPublisher();
+
+            void AddSubscriber(IPosSubscriber* subscriber);
+            void RemoveSubscriber(IPosSubscriber* subscriber);
+
+            virtual void Draw();
+
+        private:
+            bool CheckIfExistSubscriber(IPosSubscriber* subscriber);
+            void Update();
+
+        private:
+            std::list<IPosSubscriber*> m_Subscriber;
+            glm::vec3 m_Pos;
+            const std::string m_Label;
+        };
+        
     }
 }
 void InitImgGui(GLFWwindow* window, const char* glsl_version);

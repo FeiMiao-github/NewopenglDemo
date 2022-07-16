@@ -9,7 +9,9 @@ namespace demo
     class Color
     {
     public:
-        constexpr static glm::vec3 Coral = glm::vec3(1.0f, 0.5f, 0.31f);
+        constexpr static glm::vec4 White = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        constexpr static glm::vec4 Black = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+        constexpr static glm::vec4 Coral = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
     };
 }
 
