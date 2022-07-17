@@ -7,7 +7,7 @@ class LoaderException
     : std::exception
 {
 protected:
-    LoaderException(const std::string& msg) noexcept
+    explicit LoaderException(const std::string& msg) noexcept
         : _Msg(msg)
     {}
 
@@ -27,7 +27,7 @@ class LoaderOpenFileException
     : public LoaderException
 {
 public:
-    LoaderOpenFileException(const std::string& file): LoaderException("LoaderOpenFileException" + file) {}
+    explicit LoaderOpenFileException(const std::string& file): LoaderException("LoaderOpenFileException" + file) {}
     virtual ~LoaderOpenFileException() = default;
 };
 

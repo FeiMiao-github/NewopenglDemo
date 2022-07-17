@@ -6,16 +6,17 @@
 
 #include "demo/shader.h"
 #include "demo/loader.h"
+#include "demo/log.h"
 
 using namespace demo;
 
 static void PrintShaderCompileStatus(GLuint shader, const std::string& shaderName)
 {
-	char info[512] = "";
 	int success;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if (!success)
 	{
+		char info[512] = "";
 		glGetShaderInfoLog(shader, 512, NULL, info);
 		throw ShaderCompileFailed(shaderName + ":" + info);
 	}
@@ -23,11 +24,11 @@ static void PrintShaderCompileStatus(GLuint shader, const std::string& shaderNam
 
 static void PrintProgramLinkStatus(GLuint program)
 {
-	char info[512] = "";
 	int success;
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (!success)
 	{
+		char info[512] = "";
 		glGetProgramInfoLog(program, 512, NULL, info);
         throw ShaderLinkFailed(info);
 	}
@@ -78,40 +79,60 @@ ShaderProgram::ShaderProgram(const std::string& vertex, const std::string& fragm
 	delete vertexShader;
 }
 
-
 ShaderProgram::~ShaderProgram()
 {
 	glDeleteProgram(m_ID);
 }
 
-void ShaderProgram::SetProgramFloat(const std::string& prop, const GLfloat value)
+GLuint ShaderProgram::GetID()
 {
-	// Log::debug("SetProgramFloat: {}:{}", prop, value);
+	return m_ID;
+}
+
+void ShaderProgram::AssertUniformLocation(GLint loc, const std::string& prop)
+{
+	if (loc == -1)
+	{
+		std::string errmsg = "set ";
+		errmsg.append(prop);
+		errmsg.append(" error !");
+		throw ShaderUniformNotExist(errmsg);
+	}
+}
+
+void ShaderProgram::SetProgram(const std::string& prop, const GLfloat value)
+{
 	Use();
 	GLint loc = glGetUniformLocation(m_ID, prop.c_str());
+	AssertUniformLocation(loc, prop);
+	// Log::debug("SetProgramFloat: {}:{}", prop, value, loc);
 	glUniform1f(loc, value);
 }
 
-void ShaderProgram::SetProgramMat4(const std::string& prop, const glm::mat4& ptr)
+void ShaderProgram::SetProgram(const std::string& prop, const glm::mat4& ptr)
 {
-	// Log::debug("SetProgramMat4: {}:{}", prop, ptr);
 	Use();
 	GLint loc = glGetUniformLocation(m_ID, prop.c_str());
+	AssertUniformLocation(loc, prop);
+	// Log::debug("SetProgramMat4: {}:{}", prop, ptr, loc);
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(ptr));
 }
 
-void ShaderProgram::SetProgramFloat3(const std::string& prop, const glm::vec3& ptr)
+void ShaderProgram::SetProgram(const std::string& prop, const glm::vec3& ptr)
 {
-	// Log::debug("SetProgramFloat3: {}:{}", prop, ptr);
 	Use();
-	GLuint loc = glGetUniformLocation(m_ID, prop.c_str());
+	GLint loc = glGetUniformLocation(m_ID, prop.c_str());
+	AssertUniformLocation(loc, prop);
+	// Log::debug("SetProgramFloat3: {}:{}", prop, ptr, loc);
 	glUniform3fv(loc, 1, glm::value_ptr(ptr));
 }
 
-void ShaderProgram::SetProgramFloat4(const std::string& prop, const glm::vec4& ptr)
+void ShaderProgram::SetProgram(const std::string& prop, const glm::vec4& ptr)
 {
 	Use();
-	GLuint loc = glGetUniformLocation(m_ID, prop.c_str());
+	GLint loc = glGetUniformLocation(m_ID, prop.c_str());
+	AssertUniformLocation(loc, prop);
+	Log::debug("SetProgramFloat4: {}:{}", prop, ptr, loc);
 	glUniform4fv(loc, 1, glm::value_ptr(ptr));
 }
 

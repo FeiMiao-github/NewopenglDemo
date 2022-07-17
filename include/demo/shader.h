@@ -3,6 +3,7 @@
 
 #include <initializer_list>
 #include <string>
+#include <string_view>
 
 #include <glad/glad.h>
 #define GLFW_INCLUDE_NONE
@@ -17,7 +18,7 @@ namespace demo
         : public std::exception
     {
     protected:
-        ShaderException(const std::string& msg) noexcept
+        explicit ShaderException(const std::string& msg) noexcept
             : _Msg(msg)
         {}
 
@@ -37,7 +38,7 @@ namespace demo
         : public ShaderException
     {
     public:
-        ShaderCompileFailed(const std::string& err) : ShaderException("Error:" + err) {}
+        explicit ShaderCompileFailed(const std::string& err) : ShaderException("Error:" + err) {}
         virtual ~ShaderCompileFailed() = default;
     };
 
@@ -45,8 +46,16 @@ namespace demo
         : public ShaderException
     {
     public:
-        ShaderLinkFailed(const std::string& err) : ShaderException("Error:" + err) {}
+        explicit ShaderLinkFailed(const std::string& err) : ShaderException("Error:" + err) {}
         virtual ~ShaderLinkFailed() = default;
+    };
+
+    class ShaderUniformNotExist
+        : public ShaderException
+    {
+    public:
+        explicit ShaderUniformNotExist(const std::string& err) : ShaderException("Error:" + err) {}
+        virtual ~ShaderUniformNotExist() = default;
     };
 
     class Shader
@@ -73,7 +82,7 @@ namespace demo
         public Shader
     {
     public:
-        VertexShader(const std::string& name)
+        explicit VertexShader(const std::string& name)
             : Shader(Type::VERTEX_SHADER, name)
         {
         }
@@ -84,7 +93,7 @@ namespace demo
         public Shader
     {
     public:
-        FragmentShader(const std::string& name)
+        explicit FragmentShader(const std::string& name)
             : Shader(Type::FRAGMENT_SHADER, name)
         {
         }
@@ -95,19 +104,18 @@ namespace demo
     class ShaderProgram
     {
     public:
-        ShaderProgram(const std::initializer_list<Shader*>& list);
+        explicit ShaderProgram(const std::initializer_list<Shader*>& list);
         ShaderProgram(const std::string& vertex, const std::string& fragment);
         ~ShaderProgram();
 
-        GLuint GetID()
-        {
-            return m_ID;
-        }
+        GLuint GetID();
 
-        void SetProgramFloat(const std::string& prop, const GLfloat value);
-        void SetProgramMat4(const std::string& prop, const glm::mat4& ptr);
-        void SetProgramFloat3(const std::string& prop, const glm::vec3& ptr);
-        void SetProgramFloat4(const std::string& prop, const glm::vec4& ptr);
+        void AssertUniformLocation(GLint loc, const std::string& prop);
+
+        void SetProgram(const std::string& prop, const GLfloat value);
+        void SetProgram(const std::string& prop, const glm::mat4& ptr);
+        void SetProgram(const std::string& prop, const glm::vec3& ptr);
+        void SetProgram(const std::string& prop, const glm::vec4& ptr);
 
         void Use();
 

@@ -11,7 +11,7 @@ class TextureException
     : public std::exception
 {
 protected:
-    TextureException(const std::string& msg) noexcept
+    explicit TextureException(const std::string& msg) noexcept
         : _Msg(msg)
     {}
 
@@ -31,14 +31,14 @@ class TextureLoadException
     : public TextureException
 {
 public:
-    TextureLoadException(const std::string& texture) : TextureException("load texture " + texture + " failed !") {}
+    explicit TextureLoadException(const std::string& texture) : TextureException("load texture " + texture + " failed !") {}
     virtual ~TextureLoadException() = default;
 };
 
 class Texture
 {
 public:
-    Texture(const std::string& name);
+    explicit Texture(const std::string& name);
     virtual ~Texture();
     void Use();
 

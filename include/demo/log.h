@@ -2,7 +2,7 @@
 #define DEMO_LOG_H__
 
 #include <ostream>
-#include <sstream>
+#include <iostream>
 
 #include <glm/matrix.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -25,6 +25,23 @@ namespace demo
         {
             LOG_S(INFO) << last;
         }
+
+    private:
+        class InitConfig {
+        public:
+            InitConfig()
+            {
+                loguru::g_preamble_file = false;
+                loguru::g_preamble_uptime = false;
+                loguru::g_preamble_thread = false;
+            }
+
+            ~InitConfig()
+            {
+            }
+        };
+
+        const static InitConfig s_InitConfig; 
     };
 
     ::std::ostream & operator<<(::std::ostream& o, const glm::mat4 & m);

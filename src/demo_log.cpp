@@ -2,6 +2,8 @@
 
 using namespace demo;
 
+const Log::InitConfig Log::s_InitConfig;
+
 std::ostream & demo::operator<<(std::ostream& o, const glm::mat4 & m)
 {
     o << '\n';

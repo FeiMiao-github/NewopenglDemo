@@ -1,8 +1,7 @@
 #include "demo/context.h"
 #include "demo/coordination.h"
 #include "demo/lighting.h"
-#include "glm/ext/vector_float3.hpp"
-#include <cassert>
+#include "demo/log.h"
 
 using namespace demo;
 
@@ -37,11 +36,17 @@ Context::Context()
 
 Context::~Context()
 {
+    delete m_Proj;
+    m_Proj = nullptr;
+
+    delete m_View;
+    m_View = nullptr;
 }
 
 void Context::InitView()
 {
-    m_View->Move(glm::vec3(0.0f, 0.0f, -3.0f));
+    m_View->MoveTo(glm::vec3(0.0f, 0.0f, -3.0f));
+    Log::debug("Context View", m_View->Value());
 }
 
 const ViewCoordination* Context::View() const
@@ -54,30 +59,16 @@ const ProjectionCoordination* Context::Proj() const
     return m_Proj;
 }
 
-const Lighting* Context::GetLight() const
+const Lighting& Context::GetLight() const
 {
     if (m_Light == nullptr)
         throw ContextNoLightingEx();
-    return m_Light;
+    return *m_Light;
 }
 
 void Context::SetLight(const Lighting * light)
 {
     m_Light = light;
-}
-
-const glm::vec4 Context::LightColor() const
-{
-    if (m_Light == nullptr)
-        throw ContextNoLightingEx();
-    return m_Light->Color();
-}
-
-const glm::vec3 Context::LightPos() const
-{
-    if (m_Light == nullptr)
-        throw ContextNoLightingEx();
-    return m_Light->Pos();
 }
 
 const glm::vec3 Context::ViewPos() const

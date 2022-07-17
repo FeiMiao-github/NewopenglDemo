@@ -3,9 +3,11 @@
 
 #include <exception>
 #include <memory>
+
+#include "glm/ext/vector_float3.hpp"
+
 #include "demo/coordination.h"
 #include "demo/lighting.h"
-#include "glm/ext/vector_float3.hpp"
 
 namespace demo
 {
@@ -47,10 +49,8 @@ namespace demo
 
         void Update();
 
-        const Lighting* GetLight() const;
+        const Lighting& GetLight() const;
         void SetLight(const Lighting* light);
-        const glm::vec4 LightColor() const;
-        const glm::vec3 LightPos() const;
 
         const glm::vec3 ViewPos() const;
 
