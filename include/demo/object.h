@@ -10,6 +10,7 @@ namespace demo
     {
         class CubeRenderUI;
         class TransformUI;
+        class MaterialUI;
     }
 
     class Cube;
@@ -64,6 +65,7 @@ namespace demo
         private:
             CubeRender &m_CubeRender;
             TransformUI* m_TransformUI;
+            MaterialUI* m_MaterialUI;
         };
     }
 };

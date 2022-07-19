@@ -14,7 +14,7 @@ RenderTarget::~RenderTarget() {}
 CubeRender::CubeRender()
     : m_Cube(new Cube),
       m_Transform(new Transform {
-        {0.0f, -1.0f,-3.0f},
+        {0.0f, -1.0f,0.0f},
         {0.0f, 0.0f, 0.0f},
         {0.5f, 0.5f, 0.5f}
       }),
@@ -58,8 +58,10 @@ void CubeRender::Draw()
     std::unique_ptr<Context> &ctx = Context::Inst();
     auto &lighting = ctx->GetLight();
     m_ShaderProgram->SetProgram("model", m_Transform->Mat4());
+
     SetLightProp(lighting);
     SetMaterialProp();
+
     m_ShaderProgram->Use();
     m_Cube->Draw();
 }
@@ -82,7 +84,8 @@ void CubeRender::SetMaterialProp()
 
 imgui::CubeRenderUI::CubeRenderUI(CubeRender &cubeRender)
     : m_CubeRender(cubeRender),
-      m_TransformUI(new TransformUI(*cubeRender.m_Transform))
+      m_TransformUI(new TransformUI(*m_CubeRender.m_Transform)),
+      m_MaterialUI(new MaterialUI(*m_CubeRender.m_Material))
 {
     ImGuiCtx::Inst()->Add(this);
 }
@@ -90,6 +93,10 @@ imgui::CubeRenderUI::CubeRenderUI(CubeRender &cubeRender)
 imgui::CubeRenderUI::~CubeRenderUI()
 {
     ImGuiCtx::Inst()->Del(this);
+
+    delete m_MaterialUI;
+    m_MaterialUI = nullptr;
+
     delete m_TransformUI;
     m_TransformUI = nullptr;
 }
@@ -99,6 +106,7 @@ void imgui::CubeRenderUI::Draw()
     if (ImGui::TreeNode("CubeRender"))
     {
         m_TransformUI->Draw();
+        m_MaterialUI->Draw();
         ImGui::TreePop();
     }
 }

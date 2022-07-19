@@ -1,7 +1,6 @@
-#include <glm/ext/matrix_transform.hpp>
-
 #include "demo/transform.h"
 #include "demo/log.h"
+#include "imgui/imgui.h"
 
 using namespace demo;
 
@@ -126,7 +125,11 @@ void imgui::TransformUI::Update(ScalePublisher*, const ScaleSubscriber::Type& sc
 
 void imgui::TransformUI::Draw()
 {
-    m_PositionPublisher->Draw();
-    m_RotationPublisher->Draw();
-    m_ScalePublisher->Draw();
+    if (ImGui::TreeNode("Transform"))
+    {
+        m_PositionPublisher->Draw();
+        m_RotationPublisher->Draw();
+        m_ScalePublisher->Draw();
+        ImGui::TreePop();
+    }
 }

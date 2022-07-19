@@ -3,6 +3,7 @@
 
 #include "glm/ext/vector_float3.hpp"
 #include <glad/glad.h>
+#include <string>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -88,7 +89,49 @@ namespace demo
         {
             Position,
             Rotation,
-            Scale
+            Scale,
+
+            Color,
+            Ambient,
+            Diffuse,
+            Specular,
+            Shiness,
+        };
+
+        template <typename DType, typename ...Args>
+        class DrawWrapper {
+        public:
+            static bool Draw(DType&, Args...) { return false; }
+        };
+
+        template <typename ...Args>
+        class DrawWrapper<glm::vec3, Args...>
+        {
+        public:
+            static bool Draw(glm::vec3& val, const std::string& label, Args...)
+            {
+                bool change = false;
+                if (ImGui::DragFloat3(label.c_str(), &val[0]))
+                {
+                    change = true;
+                }
+                return change;
+            }
+        };
+
+        template <typename ...Args>
+        class DrawWrapper<float, Args...>
+        {
+        public:
+            static bool Draw(float& val, const std::string& label, Args...)
+            {
+                bool change = false;
+                if (ImGui::DragFloat(label.c_str(), &val))
+                {
+                    change = true;
+                }
+                return change;
+            }
         };
 
         template <typename Subscriber>
@@ -137,10 +180,7 @@ namespace demo
                 ImGui::SameLine();
 
                 std::string id = "##" + m_Label;
-                if (ImGui::DragFloat3(id.c_str(), &m_Val[0], 0.01f))
-                {
-                    change = true;
-                }
+                change = DrawWrapper<typename Subscriber::Type>::Draw(m_Val, id);
 
                 if (change)
                 {
@@ -180,6 +220,21 @@ namespace demo
 
         using ScaleSubscriber = ISubscriber<SubscriberID::Scale, glm::vec3>;
         using ScalePublisher = Publisher<ScaleSubscriber>;
+
+        using ColorSubscriber = ISubscriber<SubscriberID::Color, glm::vec3>;
+        using ColorPublisher = Publisher<ColorSubscriber>;
+
+        using AmbientSubscriber = ISubscriber<SubscriberID::Ambient, glm::vec3>;
+        using AmbientPublisher = Publisher<AmbientSubscriber>;
+
+        using DiffuseSubscriber = ISubscriber<SubscriberID::Diffuse, glm::vec3>;
+        using DiffusePublisher = Publisher<DiffuseSubscriber>;
+
+        using SpecularSubscriber = ISubscriber<SubscriberID::Specular, glm::vec3>;
+        using SpecularPublisher = Publisher<SpecularSubscriber>;
+
+        using ShinessSubscriber = ISubscriber<SubscriberID::Shiness, float>;
+        using ShinessPublisher = Publisher<ShinessSubscriber>;
     }
 }
 void InitImgGui(GLFWwindow* window, const char* glsl_version);

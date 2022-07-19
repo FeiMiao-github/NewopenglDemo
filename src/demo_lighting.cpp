@@ -19,8 +19,8 @@ Lighting::Lighting()
       m_Color(1.0f, 1.0f, 1.0f),
       m_LightingUI(new imgui::LightingUI(*this))
 {
-    SetAmbient({1.0f, 1.0f, 1.0f});
-    SetDiffuse({1.0f, 1.0f, 1.0f});
+    SetAmbient({0.1f, 0.1f, 0.1f});
+    SetDiffuse({0.5f, 0.5f, 0.5f});
     SetSpecular({1.0f, 1.0f, 1.0f});
 
     auto &ctx = Context::Inst();
