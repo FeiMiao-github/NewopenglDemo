@@ -6,7 +6,7 @@
 using namespace demo;
 using namespace demo::imgui;
 
-const Material Material::test = {{1.0f, 0.5f, 0.31f}, {1.0f, 0.5f, 0.31f}, {0.5f, 0.5f, 0.5f}, 32.0f};
+const Material Material::test = {{1.0f, 0.5f, 0.31f}, {1.0f, 0.5f, 0.31f}, {0.5f, 0.5f, 0.5f}, 64.0f};
 
 MaterialUI::MaterialUI(Material& material)
     : m_Material(material),

@@ -83,48 +83,6 @@ namespace demo{
             PointData_t{ .pos{ 0.5f,  0.5f,  0.5f},  .texCoord{1.0f, 0.0f}, .abnormal{0.0f, 1.0f, 0.0f}},
             PointData_t{ .pos{-0.5f,  0.5f,  0.5f},  .texCoord{0.0f, 0.0f}, .abnormal{0.0f, 1.0f, 0.0f}},
             PointData_t{ .pos{-0.5f,  0.5f, -0.5f},  .texCoord{0.0f, 1.0f}, .abnormal{0.0f, 1.0f, 0.0f}}
-
-            // PointData_t{.pos{-0.5f, -0.5f, -0.5f}, .abnormal{0.0f,  0.0f, -1.0f}},
-            // PointData_t{.pos{ 0.5f, -0.5f, -0.5f}, .abnormal{0.0f,  0.0f, -1.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f, -0.5f}, .abnormal{0.0f,  0.0f, -1.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f, -0.5f}, .abnormal{0.0f,  0.0f, -1.0f}},
-            // PointData_t{.pos{-0.5f,  0.5f, -0.5f}, .abnormal{0.0f,  0.0f, -1.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f, -0.5f}, .abnormal{0.0f,  0.0f, -1.0f}},
-
-            // PointData_t{.pos{-0.5f, -0.5f,  0.5f}, .abnormal{ 0.0f,  0.0f,  1.0f}},
-            // PointData_t{.pos{ 0.5f, -0.5f,  0.5f}, .abnormal{ 0.0f,  0.0f,  1.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f,  0.5f}, .abnormal{ 0.0f,  0.0f,  1.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f,  0.5f}, .abnormal{ 0.0f,  0.0f,  1.0f}},
-            // PointData_t{.pos{-0.5f,  0.5f,  0.5f}, .abnormal{ 0.0f,  0.0f,  1.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f,  0.5f}, .abnormal{ 0.0f,  0.0f,  1.0f}},
-
-            // PointData_t{.pos{-0.5f,  0.5f,  0.5f}, .abnormal{-1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f,  0.5f, -0.5f}, .abnormal{-1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f, -0.5f}, .abnormal{-1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f, -0.5f}, .abnormal{-1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f,  0.5f}, .abnormal{-1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f,  0.5f,  0.5f}, .abnormal{-1.0f,  0.0f,  0.0f}},
-
-            // PointData_t{.pos{0.5f,  0.5f,  0.5f},  .abnormal{1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{0.5f,  0.5f, -0.5f},  .abnormal{1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{0.5f, -0.5f, -0.5f},  .abnormal{1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{0.5f, -0.5f, -0.5f},  .abnormal{1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{0.5f, -0.5f,  0.5f},  .abnormal{1.0f,  0.0f,  0.0f}},
-            // PointData_t{.pos{0.5f,  0.5f,  0.5f},  .abnormal{1.0f,  0.0f,  0.0f}},
-
-            // PointData_t{.pos{-0.5f, -0.5f, -0.5f}, .abnormal{ 0.0f, -1.0f,  0.0f}},
-            // PointData_t{.pos{ 0.5f, -0.5f, -0.5f}, .abnormal{ 0.0f, -1.0f,  0.0f}},
-            // PointData_t{.pos{ 0.5f, -0.5f,  0.5f}, .abnormal{ 0.0f, -1.0f,  0.0f}},
-            // PointData_t{.pos{ 0.5f, -0.5f,  0.5f}, .abnormal{ 0.0f, -1.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f,  0.5f}, .abnormal{ 0.0f, -1.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f, -0.5f, -0.5f}, .abnormal{ 0.0f, -1.0f,  0.0f}},
-
-            // PointData_t{.pos{-0.5f,  0.5f, -0.5f}, .abnormal{ 0.0f,  1.0f,  0.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f, -0.5f}, .abnormal{ 0.0f,  1.0f,  0.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f,  0.5f}, .abnormal{ 0.0f,  1.0f,  0.0f}},
-            // PointData_t{.pos{ 0.5f,  0.5f,  0.5f}, .abnormal{ 0.0f,  1.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f,  0.5f,  0.5f}, .abnormal{ 0.0f,  1.0f,  0.0f}},
-            // PointData_t{.pos{-0.5f,  0.5f, -0.5f}, .abnormal{ 0.0f,  1.0f,  0.0f}}
         };
 
         const static size_t VERTEX_ATTR_NR = 3;
@@ -132,7 +90,7 @@ namespace demo{
              // PointData_t::pos
             {.index = 0, .size = sizeof(PointData_t::pos)  / sizeof(float), .type = GL_FLOAT, .normalized = GL_FALSE, .stride = sizeof(PointData_t), .pointer = NULL}, // PointData_t::pos
             {.index = 1, .size = sizeof(PointData_t::texCoord)  / sizeof(float), .type = GL_FLOAT, .normalized = GL_FALSE, .stride = sizeof(PointData_t), .pointer = reinterpret_cast<char*>(12)}, // PointData_t::texCoord
-            {.index = 1, .size = sizeof(PointData_t::abnormal)  / sizeof(float), .type = GL_FLOAT, .normalized = GL_FALSE, .stride = sizeof(PointData_t), .pointer = reinterpret_cast<char*>(20)} // PointData_t::texCoord
+            {.index = 2, .size = sizeof(PointData_t::abnormal)  / sizeof(float), .type = GL_FLOAT, .normalized = GL_FALSE, .stride = sizeof(PointData_t), .pointer = reinterpret_cast<char*>(20)} // PointData_t::texCoord
         };
 
         GLuint VAO, VBO;

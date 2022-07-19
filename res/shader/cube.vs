@@ -10,11 +10,13 @@ uniform mat4 projection;
 
 out vec3 Normal;
 out vec3 FragPos;
-out vec4 LightingColor;
+out vec2 TexCoords;
 
 void main()
 {
     FragPos = vec3(model * vec4(vPos, 1.0));
     Normal = mat3(transpose(inverse(model))) * vNormal; 
+    TexCoords = vTexCoord;
+
     gl_Position = projection * view * vec4(FragPos, 1.0);
 }

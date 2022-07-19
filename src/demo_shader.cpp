@@ -91,13 +91,13 @@ GLuint ShaderProgram::GetID()
 
 void ShaderProgram::AssertUniformLocation(GLint loc, const std::string& prop)
 {
-	if (loc == -1)
-	{
-		std::string errmsg = "set ";
-		errmsg.append(prop);
-		errmsg.append(" error !");
-		throw ShaderUniformNotExist(errmsg);
-	}
+	// if (loc == -1)
+	// {
+	// 	std::string errmsg = "set ";
+	// 	errmsg.append(prop);
+	// 	errmsg.append(" error !");
+	// 	throw ShaderUniformNotExist(errmsg);
+	// }
 }
 
 void ShaderProgram::SetProgram(const std::string& prop, const GLfloat value)

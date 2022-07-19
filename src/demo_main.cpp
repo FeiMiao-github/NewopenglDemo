@@ -2,14 +2,6 @@
 #include <ostream>
 
 #include "demo/context.h"
-#include "demo/lighting.h"
-#include "demo/object.h"
-#include "demo/shader.h"
-#include "demo/imgui.h"
-#include "demo/shape.h"
-#include "demo/texture.h"
-#include "demo/coordination.h"
-#include "demo/colordef.h"
 
 auto framebufferSizeCB = [](GLFWwindow*, int width, int height)
 {

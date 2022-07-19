@@ -7,43 +7,46 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-class TextureException
-    : public std::exception
+namespace demo
 {
-protected:
-    explicit TextureException(const std::string& msg) noexcept
-        : _Msg(msg)
-    {}
-
-public:
-    virtual ~TextureException() noexcept = default;
-
-    virtual const char* what() const noexcept override
+    class TextureException
+        : public std::exception
     {
-        return _Msg.c_str();
-    }
+    protected:
+        explicit TextureException(const std::string& msg) noexcept
+            : _Msg(msg)
+        {}
 
-private:
-    std::string _Msg;
-};
+    public:
+        virtual ~TextureException() noexcept = default;
 
-class TextureLoadException
-    : public TextureException
-{
-public:
-    explicit TextureLoadException(const std::string& texture) : TextureException("load texture " + texture + " failed !") {}
-    virtual ~TextureLoadException() = default;
-};
+        virtual const char* what() const noexcept override
+        {
+            return _Msg.c_str();
+        }
 
-class Texture
-{
-public:
-    explicit Texture(const std::string& name);
-    virtual ~Texture();
-    void Use();
+    private:
+        std::string _Msg;
+    };
 
-private:
-    GLuint texture;
-};
+    class TextureLoadException
+        : public TextureException
+    {
+    public:
+        explicit TextureLoadException(const std::string& texture) : TextureException("load texture " + texture + " failed !") {}
+        virtual ~TextureLoadException() = default;
+    };
+
+    class Texture
+    {
+    public:
+        explicit Texture(const std::string& name);
+        virtual ~Texture();
+        void Use();
+
+    private:
+        GLuint texture;
+    };
+}
 
 #endif // DEMO_TEXTURE_H__

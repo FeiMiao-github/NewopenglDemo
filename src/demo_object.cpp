@@ -1,9 +1,7 @@
-#include "demo/colordef.h"
-#include "demo/lighting.h"
 #include "demo/log.h"
 #include "demo/material.h"
-#include "demo/transform.h"
 #include "demo/context.h"
+#include "demo/texture.h"
 #include "demo/object.h"
 
 using namespace demo;
@@ -14,12 +12,13 @@ RenderTarget::~RenderTarget() {}
 CubeRender::CubeRender()
     : m_Cube(new Cube),
       m_Transform(new Transform {
-        {0.0f, -1.0f,0.0f},
+        {0.0f, 0.0f,0.0f},
         {0.0f, 0.0f, 0.0f},
-        {0.5f, 0.5f, 0.5f}
+        {1.0f, 1.0f, 1.0f}
       }),
       m_Material(new Material(Material::test)),
       m_ShaderProgram(new ShaderProgram("cube.vs", "cube.fs")),
+      m_Texture(new Texture("texture.jpeg")),
       m_CubeRenderUI(new imgui::CubeRenderUI(*this))
 {
     Log::debug("sizeof material", sizeof(*m_Material));
@@ -39,6 +38,9 @@ CubeRender::~CubeRender()
 {
     delete m_CubeRenderUI;
     m_CubeRenderUI = nullptr;
+
+    delete m_Texture;
+    m_Texture = nullptr;
 
     delete m_ShaderProgram;
     m_ShaderProgram = nullptr;
@@ -63,6 +65,7 @@ void CubeRender::Draw()
     SetMaterialProp();
 
     m_ShaderProgram->Use();
+    m_Texture->Use();
     m_Cube->Draw();
 }
 
@@ -76,8 +79,8 @@ void CubeRender::SetLightProp(const Lighting& lighting)
 
 void CubeRender::SetMaterialProp()
 {
-    m_ShaderProgram->SetProgram("vMaterial.ambient", m_Material->ambient);
-    m_ShaderProgram->SetProgram("vMaterial.diffuse", m_Material->diffuse);
+    // m_ShaderProgram->SetProgram("vMaterial.ambient", m_Material->ambient);
+    // m_ShaderProgram->SetProgram("vMaterial.diffuse", 0);
     m_ShaderProgram->SetProgram("vMaterial.specular", m_Material->specular);
     m_ShaderProgram->SetProgram("vMaterial.shininess", m_Material->shininess);
 }

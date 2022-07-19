@@ -18,6 +18,7 @@ namespace demo
     class Transform;
     class Material;
     class Lighting;
+    class Texture;
 
     class RenderTarget
     {
@@ -45,6 +46,7 @@ namespace demo
         Transform* m_Transform;
         Material* m_Material;
         ShaderProgram* m_ShaderProgram;
+        Texture* m_Texture;
 
     private:
         friend class imgui::CubeRenderUI;

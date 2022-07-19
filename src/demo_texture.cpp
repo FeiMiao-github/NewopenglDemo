@@ -3,6 +3,24 @@
 
 #include "demo/loader.h"
 #include "demo/texture.h"
+#include "demo/log.h"
+
+using namespace demo;
+
+GLenum GetImgFormat(const int channelNR)
+{
+	GLenum format;
+	if (channelNR == 1)
+		format = GL_RED;
+	else if (channelNR == 3)
+		format = GL_RGB;
+	else if (channelNR == 4)
+		format = GL_RGBA;
+	else
+		throw TextureLoadException("Wrong format !");
+	
+	return format;
+}
 
 static void LoadTextureData(const std::string& img)
 {
@@ -12,7 +30,12 @@ static void LoadTextureData(const std::string& img)
 
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		Log::debug("image type: ", img);
+		Log::debug("image width, height: ", width, height);
+		Log::debug("channel: ", nrChannel);
+
+		GLenum format = GetImgFormat(nrChannel);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
