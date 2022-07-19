@@ -10,7 +10,6 @@ struct Material
 
 struct Light {
     vec3 position;
-
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -34,7 +33,6 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = vLight.diffuse * (diff * vMaterial.diffuse);
 
-    float specularStrength = 0.8;
     vec3 viewDir = normalize(vViewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), vMaterial.shininess);

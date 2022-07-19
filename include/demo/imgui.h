@@ -111,7 +111,7 @@ namespace demo
             static bool Draw(glm::vec3& val, const std::string& label, Args...)
             {
                 bool change = false;
-                if (ImGui::DragFloat3(label.c_str(), &val[0]))
+                if (ImGui::DragFloat3(label.c_str(), &val[0], 0.05f))
                 {
                     change = true;
                 }
@@ -126,7 +126,7 @@ namespace demo
             static bool Draw(float& val, const std::string& label, Args...)
             {
                 bool change = false;
-                if (ImGui::DragFloat(label.c_str(), &val))
+                if (ImGui::DragFloat(label.c_str(), &val, 0.05f))
                 {
                     change = true;
                 }

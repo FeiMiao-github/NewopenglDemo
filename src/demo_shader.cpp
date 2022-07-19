@@ -96,7 +96,7 @@ void ShaderProgram::AssertUniformLocation(GLint loc, const std::string& prop)
 		std::string errmsg = "set ";
 		errmsg.append(prop);
 		errmsg.append(" error !");
-		throw ShaderUniformNotExist(errmsg);
+		// throw ShaderUniformNotExist(errmsg);
 	}
 }
 
